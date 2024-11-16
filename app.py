@@ -6,8 +6,7 @@ app.secret_key = 'votre_cle_secrete'
 
 # Classe Client
 class Client:
-    def __init__(self, client_id, name, gender, phone, address):
-        self.client_id = client_id
+    def __init__(self, name, gender, phone, address):
         self.name = name
         self.gender = gender
         self.phone = phone
@@ -45,8 +44,8 @@ def view():
     conn = sqlite3.connect('Clients.db')
     cur = conn.cursor()
     cur.execute("SELECT * FROM client")
-    rows = cur.fetchall()
-    clients = [Client(row[0], row[1], row[2], row[3]) for row in rows]  
+    clients = cur.fetchall()
+    #client = [Client(row[0], row[1], row[2], row[3]) for row in clients]  
     conn.close()
     return clients
 
@@ -73,10 +72,30 @@ def delete(client_id):
     conn.close()
 
 # Route pour afficher les clients
-@app.route('/index')
+@app.route('/')
 def index():
-    clients = view()  # Récupération de la liste des clients
+    conn = sqlite3.connect('Clients.db')
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM client")
+    clients = cur.fetchall()
+    for row in clients:
+        print(f"ID: {row[0]}, Nom: {row[1]}, Sexe: {row[2]}, Téléphone: {row[3]}, Adresse: {row[4]}")
+    #clients = view()  # Récupération de la liste des clients
     return render_template('index.html', clients=clients)
+
+@app.route('/ajouter_client', methods=['GET', 'POST'])
+def ajouter_client() :
+    if request.method == 'POST':
+        client = Client(
+            name=request.form.get('name'),
+            gender=request.form.get('gender'),
+            phone=request.form.get('phone'),
+            address=request.form.get('address')
+        )
+        insert(client)  # Mise à jour dans la base de données
+        flash('Client ajouté avec succès!')
+        return redirect(url_for('index'))
+    return render_template('ajouter_client.html')
 
 # Route pour modifier un client
 @app.route('/modifier_client/<int:client_id>', methods=['GET', 'POST'])

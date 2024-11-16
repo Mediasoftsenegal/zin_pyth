@@ -1,6 +1,5 @@
 class Client:
-    def __init__(self, client_id, name , gender, phone, address):
-        self.client_id = client_id
+    def __init__(self, name , gender, phone, address):
         self.name = name
         self.gender = gender 
         self.phone = phone
@@ -8,7 +7,6 @@ class Client:
 
     def serialize(self):
         return {
-            'client_id':self.client_id,
             'name':self.name,
             'gender':self.gender,
             'phone' : self.phone,

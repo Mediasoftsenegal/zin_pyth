@@ -70,7 +70,7 @@
                                 </div>
                             </div>
                         </form>
-                        <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#Modals">+ Nouveau modèle</button>
+                        <a href="{{ url_for('ajouter_client') }}" class="btn btn-dark btn-sm" >+ Nouveau client</a>
                     </div>
                 </div>
             </div>
@@ -129,18 +129,20 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        <tr class="odd">
-                                            <td class="sorting_1">1</td>
-                                            <td>{{ clients['name'] }}</td>
-                                            <td>{{ clients['gender'] }}</td>
-                                            <td>{{ clients['phone'] }}</td>
-                                            <td>{{ clients['address'] }}</td>
-                                            <td align="center"><a href="#"><i class="fas fa-pencil-ruler"></i></a></td>
-                                            <td align="center">
-                                                <a href="#"><i class="fas fa-edit"></i></a>
-                                                <a href="#" data-toggle="modal" data-target="#Deletes"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
+                                        {% for client in clients %}
+                                            <tr class="odd">
+                                                <td class="sorting_1">1</td>
+                                                <td>{{ client[1] }}</td>
+                                                <td>{{ client[2] }}</td>
+                                                <td>{{ client[3] }}</td>
+                                                <td>{{ client[4] }}</td>
+                                                <td align="center"><a href="#"><i class="fas fa-pencil-ruler"></i></a></td>
+                                                <td align="center">
+                                                    <a href="#"><i class="fas fa-edit"></i></a>
+                                                    <a href="#" data-toggle="modal" data-target="#Deletes"><i class="fas fa-trash"></i></a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
